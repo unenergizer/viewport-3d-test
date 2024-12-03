@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -38,7 +39,7 @@ public class ViewportMain extends Game {
             // World setup
             gdxGltfQuickStart = new GdxGltfQuickStart();
             gdxGltfQuickStart.create();
-            worldViewport = new ScreenViewport();
+            worldViewport = new FitViewport(600,200);
             worldViewport.apply();
         }
 
@@ -56,7 +57,7 @@ public class ViewportMain extends Game {
             spriteBatch.end();
 
             // Draw world
-            worldViewport.setScreenBounds(20,20, 600, 600);
+            worldViewport.setScreenBounds(20,20, 600, 200);
             worldViewport.apply();
             gdxGltfQuickStart.render();
         }
