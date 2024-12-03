@@ -6,11 +6,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
+/**
+ * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms.
+ */
 public class ViewportMain extends Game {
 
     @Override
@@ -39,8 +40,15 @@ public class ViewportMain extends Game {
             // World setup
             gdxGltfQuickStart = new GdxGltfQuickStart();
             gdxGltfQuickStart.create();
-            worldViewport = new FitViewport(600,200);
-            worldViewport.apply();
+
+            // Setting viewport bounds and world size here to test if the change works
+            int x = 500;
+            int y = 500;
+            int width = 100;
+            int height = 100;
+            worldViewport = new ScreenViewport(gdxGltfQuickStart.getCamera());
+            worldViewport.setScreenBounds(x, y, width, height);
+            worldViewport.setWorldSize(width, height);
         }
 
         @Override
@@ -48,18 +56,27 @@ public class ViewportMain extends Game {
             ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 
             // Draw background
-            backgroundViewport.setScreenBounds(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            backgroundViewport.getCamera().position.set(0,0,0);
+            // TODO: This is not working as expected
+            backgroundViewport.setScreenBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            backgroundViewport.getCamera().position.set(0, 0, 0);
             backgroundViewport.apply();
             spriteBatch.setProjectionMatrix(backgroundViewport.getCamera().combined);
             spriteBatch.begin();
             spriteBatch.draw(texture, 0, 0);
             spriteBatch.end();
 
+            // Update the viewport bounds AND world size to set the screen XY and width/height
+            int x = 100;
+            int y = 100;
+            int width = 800;
+            int height = 200;
+            worldViewport.setScreenBounds(x, y, width, height);
+            worldViewport.setWorldSize(width, height);
+            worldViewport.apply(true);
+
             // Draw world
-            worldViewport.setScreenBounds(20,20, 600, 200);
-            worldViewport.apply();
             gdxGltfQuickStart.render();
+            System.out.println("Camera Viewport: " + gdxGltfQuickStart.getCamera().viewportWidth + "x" + gdxGltfQuickStart.getCamera().viewportHeight);
         }
 
         @Override
