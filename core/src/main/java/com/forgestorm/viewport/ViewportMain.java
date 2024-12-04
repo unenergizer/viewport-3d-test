@@ -52,15 +52,12 @@ public class ViewportMain extends Game {
         }
 
         @Override
-        public void render(float v) {
-            ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+        public void render(float delta) {
+            ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f, true);
 
             // Draw background
-            // TODO: This is not working as expected
             backgroundViewport.setScreenBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            backgroundViewport.getCamera().position.set(0, 0, 0);
             backgroundViewport.apply();
-            spriteBatch.setProjectionMatrix(backgroundViewport.getCamera().combined);
             spriteBatch.begin();
             spriteBatch.draw(texture, 0, 0);
             spriteBatch.end();
@@ -76,12 +73,12 @@ public class ViewportMain extends Game {
 
             // Draw world
             gdxGltfQuickStart.render();
-            System.out.println("Camera Viewport: " + gdxGltfQuickStart.getCamera().viewportWidth + "x" + gdxGltfQuickStart.getCamera().viewportHeight);
         }
 
         @Override
-        public void resize(int i, int i1) {
-
+        public void resize(int width, int height) {
+            backgroundViewport.update(width, height, true);
+            worldViewport.update(width, height, true);
         }
 
         @Override
